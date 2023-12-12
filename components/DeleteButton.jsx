@@ -2,10 +2,20 @@
 
 import { Button } from "@material-tailwind/react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const DeleteButton = ({ id }) => {
+  const router = useRouter();
   const handleDelete = async (id) => {
-    const res = await axios.delete(`http://localhost:3000/api/todo/${id}`);
+    try {
+      const res = await axios.delete(`http://localhost:3000/api/todo/${id}`);
+      toast.success(res.data.message);
+      router.refresh();
+    } catch (error) {
+      console.log("error", error);
+      toast.error(error.data.message);
+    }
   };
   return (
     <div>
