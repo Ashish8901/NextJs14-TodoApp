@@ -30,13 +30,13 @@ const Login = () => {
       email,
       password,
     });
-    console.log("res", res);
     if (res?.error) {
       if (res?.url) {
-        router.replace("/dashboard");
+        router.replace("/login");
       }
       toast.error("Invalid Credientals");
     } else {
+      router.push("/dashboard");
       toast.success("Successfully Logged In.");
     }
   };
