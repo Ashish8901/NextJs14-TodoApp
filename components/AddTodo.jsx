@@ -18,9 +18,12 @@ const AddTodo = () => {
         return toast.error("Please fill the task name");
       }
       dispatch(taskLoading(true));
-      const res = await axios.post("http://localhost:3000/api/todo", {
-        description,
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/todo`,
+        {
+          description,
+        }
+      );
       dispatch(addTask(res.data.data));
       toast.success(res.data.message);
       setDescription("");

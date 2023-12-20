@@ -17,7 +17,9 @@ const DeleteButton = ({ id }) => {
   const handleDelete = async (id) => {
     try {
       dispatch(taskLoading(true));
-      const res = await axios.delete(`http://localhost:3000/api/todo/${id}`);
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/todo/${id}`
+      );
       dispatch(deleteTask(id));
       toast.success(res.data.message);
       router.refresh();
