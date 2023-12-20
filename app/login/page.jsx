@@ -30,6 +30,7 @@ const Login = () => {
       email,
       password,
     });
+    console.log("res", res);
     if (res?.error) {
       if (res?.url) {
         router.replace("/dashboard");
