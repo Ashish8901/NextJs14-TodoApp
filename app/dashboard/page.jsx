@@ -9,7 +9,7 @@ import { useId } from "react";
 
 export async function getTodolist() {
   try {
-    const res = await axios.get("http://localhost:3000/api/todo");
+    const res = await axios.get("https://todoappinredux.vercel.app/api/todo");
     return res.data;
   } catch (error) {
     console.log("error", error.message);
@@ -56,4 +56,4 @@ const Dashboard = async () => {
   );
 };
 
-export default Dashboard
+export default Dashboard;
