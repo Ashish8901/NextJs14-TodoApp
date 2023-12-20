@@ -25,15 +25,30 @@ export async function PUT(request) {
   const { description } = await request.json();
   try {
     const id = getIdFromPathname(request.nextUrl.pathname);
-    await Todo.updateOne({ _id: id }, { description });
+    const updatedData = await Todo.findByIdAndUpdate(
+      { _id: id },
+      { description },
+      { new: true }
+    );
+
+    if (!updatedData) {
+      // If no data was found with the specified ID
+      return new NextResponse(
+        JSON.stringify(
+          { success: false, message: "Task not found" },
+          { status: 404 }
+        )
+      );
+    }
+
     return new NextResponse(
       JSON.stringify(
-        { success: true, message: "Task Updated" },
+        { success: true, message: "Task Updated", data: updatedData },
         { status: 200 }
       )
     );
   } catch (error) {
     console.log("error", error);
-    return new NextResponse.json({ error });
+    return new NextResponse.json({ error }, { status: 500 });
   }
 }

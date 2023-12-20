@@ -35,6 +35,7 @@ export const POST = async (request) => {
         {
           success: true,
           message: "Task Added",
+          data: newTodo,
         },
         {
           status: 201,

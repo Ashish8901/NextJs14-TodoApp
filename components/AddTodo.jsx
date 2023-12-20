@@ -1,11 +1,15 @@
 "use client";
+import { addTask, taskLoading } from "@/lib/redux/slices/TodoSlice/TodoSlice";
 import { Button, Input } from "@material-tailwind/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const AddTodo = () => {
+  const dispatch = useDispatch();
+  const taskStatus = useSelector((state) => state.todos);
   const router = useRouter();
   const [description, setDescription] = useState("");
   const addTodo = async () => {
@@ -13,9 +17,11 @@ const AddTodo = () => {
       if (!description) {
         return toast.error("Please fill the task name");
       }
+      dispatch(taskLoading(true));
       const res = await axios.post("http://localhost:3000/api/todo", {
         description,
       });
+      dispatch(addTask(res.data.data));
       toast.success(res.data.message);
       setDescription("");
       router.refresh();
@@ -33,8 +39,17 @@ const AddTodo = () => {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <Button color="green" className="ml-2 overflow-visible" onClick={addTodo}>
-        Add
+      <Button
+        color="green"
+        className="ml-2 overflow-visible flex "
+        onClick={addTodo}
+      >
+        Add{" "}
+        {taskStatus.loading && (
+          <div className="ml-4 loader-container">
+            <div className="loader"></div>
+          </div>
+        )}
       </Button>
     </div>
   );

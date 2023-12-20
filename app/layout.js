@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "@/utils/SessionProvider";
 import Navbar from "@/components/Navbar";
 import ReactToast from "@/components/react-toast";
+import { Providers } from "@/lib/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -16,11 +17,13 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider session={session}>
-          <Navbar />
-          {children}
-          <ReactToast />
-        </SessionProvider>
+        <Providers>
+          <SessionProvider session={session}>
+            <Navbar />
+            {children}
+            <ReactToast />
+          </SessionProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -1,15 +1,24 @@
 "use client";
 
+import {
+  deleteTask,
+  taskLoading,
+} from "@/lib/redux/slices/TodoSlice/TodoSlice";
 import { Button } from "@material-tailwind/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const DeleteButton = ({ id }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const Tasklist = useSelector((state) => state.todos);
   const handleDelete = async (id) => {
     try {
+      dispatch(taskLoading(true));
       const res = await axios.delete(`http://localhost:3000/api/todo/${id}`);
+      dispatch(deleteTask(id));
       toast.success(res.data.message);
       router.refresh();
     } catch (error) {

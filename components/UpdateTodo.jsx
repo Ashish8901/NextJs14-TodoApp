@@ -1,19 +1,32 @@
 "use client";
+import {
+  taskLoading,
+  updateTask,
+} from "@/lib/redux/slices/TodoSlice/TodoSlice";
 import { Button, Input } from "@material-tailwind/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const UpdateTodo = ({ updateId }) => {
   const router = useRouter();
-  const [description, setDescription] = useState("");
-  const updateTodo = async (updateId) => {
+  const dispatch = useDispatch();
+  const TaskList = useSelector((state) => state.todos);
+  const getDatabyID = TaskList.todos.find((c, i) => {
+    return c._id == updateId;
+  });
+  const [description, setDescription] = useState(getDatabyID?.description);
+  const updateTodo = async () => {
     try {
+      x;
       if (!description) {
         return toast.error("Please fill update the task name");
       }
+      dispatch(taskLoading(true));
       const res = await axios.put(`/api/todo/${updateId}`, { description });
+      dispatch(updateTask(res.data.data));
       toast.success(res.data.message);
       setDescription("");
       router.push("/dashboard");
@@ -41,7 +54,7 @@ const UpdateTodo = ({ updateId }) => {
         <Button
           color="green"
           className="pl-1.5 ml-2 overflow-auto"
-          onClick={() => updateTodo(updateId)}
+          onClick={() => updateTodo()}
         >
           Update
         </Button>
