@@ -20,12 +20,14 @@ const UpdateTodo = ({ updateId }) => {
   const [description, setDescription] = useState(getDatabyID?.description);
   const updateTodo = async () => {
     try {
-      x;
       if (!description) {
         return toast.error("Please fill update the task name");
       }
       dispatch(taskLoading(true));
-      const res = await axios.put(`/api/todo/${updateId}`, { description });
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/todo/${updateId}`,
+        { description }
+      );
       dispatch(updateTask(res.data.data));
       toast.success(res.data.message);
       setDescription("");
