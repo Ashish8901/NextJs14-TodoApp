@@ -9,7 +9,7 @@ import { useId } from "react";
 
 export async function getTodolist() {
   try {
-    const res = await axios.get("https://todoappinredux.vercel.app/api/todo");
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/todo`);
     return res.data;
   } catch (error) {
     console.log("error", error.message);
